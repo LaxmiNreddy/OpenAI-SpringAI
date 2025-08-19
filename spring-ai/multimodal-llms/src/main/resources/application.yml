@@ -1,0 +1,39 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /springai
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  ai:
+    openai:
+      api-key: ${OPENAI_KEY}
+      chat: # By default its true, this triggers the autoconfiguration.
+        options:
+          model: gpt-4.1
+          temperature: 1.0
+          max_completion_tokens: 2000
+      image:
+        api-key: ${OPENAI_KEY}
+        options:
+          quality: hd
+          model: dall-e-3 # dall-e-2, dall-e-3
+          height: 1024
+          width: 1792
+          style: natural
+          responseFormat: b64_json
+      audio:
+        speech:
+          options:
+            speed: 1.0
+            model: tts-1 #tts-1, tts-1-hd or gpt-4o-mini-tts
+            response-format: MP3
+            voice: sage #alloy, echo, fable, onyx, nova, shimmer, sage, coral, and ash
+        transcription:
+          options:
+            model: "whisper-1"  #gpt-4o-transcribe, gpt-4o-mini-transcribe, and whisper-1
+            prompt: Extract text from the file.
+
+

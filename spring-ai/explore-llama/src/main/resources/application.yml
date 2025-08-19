@@ -1,0 +1,11 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /springai
+spring:
+  ai:
+    ollama:
+      chat:
+        options:
+          model: llama3.1
+
