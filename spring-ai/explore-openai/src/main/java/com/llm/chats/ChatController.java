@@ -5,7 +5,6 @@ import com.llm.dto.UserInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,13 +30,14 @@ public class ChatController {
         var requestSpec = chatClient
                 .prompt()
 //                .advisors(new SimpleLoggerAdvisor())
-                .system("You are helpful assistant!")
+ //               .system("just answer yes or know!")
                 .user(userInput.prompt());
 
-        log.info("requestSpec : {} ", requestSpec);
+
 
         var responseSpec = requestSpec.call();
-
+//        var respOp = responseSpec.content();
+        log.info("requestSpec : {} ", requestSpec.call().content());
 //        return responseSpec.chatResponse();
         return responseSpec.content();
 
@@ -77,7 +77,7 @@ public class ChatController {
                 .system(systemMessage)
                 .call();
 
-
+        log.info("op message : {} ", responseSpec.content());
 //        return responseSpec.chatResponse();
         return responseSpec.content();
 

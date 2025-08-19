@@ -7,19 +7,19 @@ spring:
       api-key: ${OPENAI_KEY}
       chat:
         options:
-          model: gpt-4.1 #gpt-4.1, gpt-4o
+          model: gpt-4o
           temperature: 0.7
-          max-completion-tokens: 2000
-logging:
-  level:
-    org:
-      springframework:
-        ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG
-
-weather:
-  api-key : 
-  api-url : http://api.weatherapi.com/v1
-
-currency-exchange:
-  api-key :
-  base-url: https://openexchangerates.org/api
+          max-completion-tokens: 300
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG
+#
+#weather:
+#  api-key :
+#  api-url : http://api.weatherapi.com/v1
+#
+#currency-exchange:
+#  api-key :
+#  base-url: https://openexchangerates.org/api

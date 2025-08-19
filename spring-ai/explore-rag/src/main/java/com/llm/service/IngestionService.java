@@ -9,8 +9,8 @@ import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.ParagraphPdfDocumentReader;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
-import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
+//import org.springframework.ai.vectorstore.VectorStore;
+//import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -25,7 +25,7 @@ public class IngestionService implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(IngestionService.class);
 
-    private final VectorStore vectorStore;
+//    private final VectorStore vectorStore;
 
     @Value("classpath:/docs/Flexora_FAQ.pdf")
     private Resource faqPdf;
@@ -33,9 +33,9 @@ public class IngestionService implements CommandLineRunner {
     @Value("${ingestion.enabled:false}")
     private boolean ingestionEnabled;
 
-    public IngestionService(@Qualifier(value = "qaVectorStore") PgVectorStore vectorStore) {
-        this.vectorStore = vectorStore;
-    }
+//    public IngestionService(@Qualifier(value = "qaVectorStore") PgVectorStore vectorStore) {
+//        this.vectorStore = vectorStore;
+//    }
 
     @Override
     public void run(String... args) throws Exception {
@@ -46,7 +46,7 @@ public class IngestionService implements CommandLineRunner {
     private void ingestPDFDocs(String ingestType, Resource pdfResource) {
         log.info("Ingesting PDF docs");
         var docs = getPDFDocuments(ingestType, pdfResource);
-        vectorStore.add(docs);
+//        vectorStore.add(docs);
         log.info("Ingested {} documents from pdf successfully", docs.size());
     }
 
@@ -103,7 +103,7 @@ public class IngestionService implements CommandLineRunner {
         var textReader = new TextReader(docSource);
         textReader.getCustomMetadata().put("filename", docSource.getFilename());
         var docs = textReader.read();
-        vectorStore.add(docs);
+//        vectorStore.add(docs);
         log.info("Ingested {} documents from text file successfully", docs.size());
 
     }
@@ -111,7 +111,7 @@ public class IngestionService implements CommandLineRunner {
     private void ingestWordDocs( String ingestType, Resource docSource) {
         log.info("Ingesting Word docs");
         var docs = getWordDocuments(docSource, ingestType);
-        vectorStore.add(docs);
+//        vectorStore.add(docs);
         log.info("Ingested {} documents from word successfully", docs.size());
     }
 

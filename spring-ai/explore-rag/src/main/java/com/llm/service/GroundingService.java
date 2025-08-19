@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.vectorstore.SearchRequest;
-import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
+//import org.springframework.ai.vectorstore.SearchRequest;
+//import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -38,16 +38,17 @@ public class GroundingService {
     @Value("classpath:/prompt-templates/RAG-Prompt.st")
     private Resource ragPrompt;
 
-    private final PgVectorStore vectorStore;
+//    private final PgVectorStore vectorStore;
 
 
     @Value("classpath:/prompt-templates/RAG-QA-Prompt.st")
     private Resource ragQAPrompt;
 
-    public GroundingService(ChatClient.Builder chatClientBuilder,
-                            @Qualifier("qaVectorStore") PgVectorStore vectorStore) {
+    public GroundingService(ChatClient.Builder chatClientBuilder
+//                            ,@Qualifier("qaVectorStore") PgVectorStore vectorStore
+    ) {
         this.chatClient = chatClientBuilder.build();
-        this.vectorStore=vectorStore;
+       // this.vectorStore=vectorStore;
     }
 
     public GroundingResponse grounding(GroundingRequest groundingRequest) {
@@ -74,47 +75,47 @@ public class GroundingService {
 
     }
 
-    public GroundingResponse retrieveAnswer(GroundingRequest groundingRequest) {
-
-
-        var results = vectorStore
-                .doSimilaritySearch(SearchRequest.builder()
-                        .query(groundingRequest.prompt())
-                        .build());
-
-        log.info("results size : {} ", results.size());
-
-        var context = results
-                .stream()
-                .filter(Objects::nonNull)
-                .filter(result -> result.getScore() > 0.8)
-                .limit(2)
-                .map(result -> result.getText())
-                .collect(Collectors.joining("\n"));
-
-
-
-        if(StringUtils.isNotEmpty(context))
-        {
-            log.info("Matched context :  {} ", context);
-
-            PromptTemplate promptTemplate = new PromptTemplate(ragQAPrompt);
-            var promptMessage = promptTemplate.createMessage(
-                    Map.of("input", groundingRequest.prompt(),
-                            "context", context));
-
-            var prompt = new Prompt(List.of(promptMessage));
-            var response = chatClient.prompt(prompt)
-                    .call()
-                    .content();
-            log.info("response : {} ", response);
-            return new GroundingResponse(response);
-
-        }else{
-            log.info("No relevant context, so sending default response");
-            return new GroundingResponse("Sorry No Relevant Info Found");
-        }
-
-
-    }
+//    public GroundingResponse retrieveAnswer(GroundingRequest groundingRequest) {
+//
+//
+//        var results = vectorStore
+//                .doSimilaritySearch(SearchRequest.builder()
+//                        .query(groundingRequest.prompt())
+//                        .build());
+//
+//        log.info("results size : {} ", results.size());
+//
+//        var context = results
+//                .stream()
+//                .filter(Objects::nonNull)
+//                .filter(result -> result.getScore() > 0.8)
+//                .limit(2)
+//                .map(result -> result.getText())
+//                .collect(Collectors.joining("\n"));
+//
+//
+//
+//        if(StringUtils.isNotEmpty(context))
+//        {
+//            log.info("Matched context :  {} ", context);
+//
+//            PromptTemplate promptTemplate = new PromptTemplate(ragQAPrompt);
+//            var promptMessage = promptTemplate.createMessage(
+//                    Map.of("input", groundingRequest.prompt(),
+//                            "context", context));
+//
+//            var prompt = new Prompt(List.of(promptMessage));
+//            var response = chatClient.prompt(prompt)
+//                    .call()
+//                    .content();
+//            log.info("response : {} ", response);
+//            return new GroundingResponse(response);
+//
+//        }else{
+//            log.info("No relevant context, so sending default response");
+//            return new GroundingResponse("Sorry No Relevant Info Found");
+//        }
+//
+//
+//    }
 }

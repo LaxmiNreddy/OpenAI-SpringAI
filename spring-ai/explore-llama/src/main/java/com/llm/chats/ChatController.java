@@ -31,6 +31,7 @@ public class ChatController {
                 .user(userInput.prompt());
 
         var responseSpec = requestSpec.call();
+        log.info("user o/p message : {} ", responseSpec.content());
         return responseSpec.content();
     }
 

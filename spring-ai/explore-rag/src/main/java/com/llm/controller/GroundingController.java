@@ -23,7 +23,8 @@ public class GroundingController {
 
     @PostMapping("/api/v2/grounding")
     public GroundingResponse groundingV2(@RequestBody GroundingRequest groundingRequest) {
-        return groundingService.retrieveAnswer(groundingRequest);
+        return null;
+           //     groundingService.retrieveAnswer(groundingRequest);
     }
 
 
